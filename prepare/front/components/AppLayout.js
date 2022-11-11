@@ -6,6 +6,7 @@ import { Input, Menu, Row, Col } from "antd";
 import UserProfile from "../components/UserProfile";
 import LoginForm from "../components/LoginForm";
 
+
 const AppLayout = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   // children은 AppLayout 안 부분
@@ -28,13 +29,14 @@ const AppLayout = ({ children }) => {
           </Link>
         </Menu.Item>
         <Menu.Item>
-          <Input.Search enterButton style={{ verticalAlign: "middle" }} />
+          <Input.Search enterButton style={{marginTop : 10}} />
         </Menu.Item>
       </Menu>
       <Row gutter={8}>
         <Col xs={24} md={6}>
-          로그인페이지, 로그인 후엔 사용자 페이지
-          {isLoggedIn} ? <UserProfile /> : <LoginForm />
+          {isLoggedIn 
+          ? <UserProfile setIsLoggedIn={setIsLoggedIn} /> 
+          : <LoginForm setIsLoggedIn={setIsLoggedIn} />}
         </Col>
         <Col xs={24} md={12}>
           {children}
