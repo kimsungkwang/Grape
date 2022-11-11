@@ -15,7 +15,7 @@ const AppLayout = ({ children }) => {       // children은 AppLayout 안 부분
   );
 };
 
-AppLayout.prototypes = {
+AppLayout.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
