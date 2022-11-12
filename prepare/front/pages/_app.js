@@ -1,9 +1,11 @@
 import React from "react";
-import PropTypes from "prop-types";
 import Head from "next/head";
+import PropTypes from "prop-types";
 import "antd/dist/antd.css";
 
-const Grape = ({ Component }) => {
+import wrapper from "../store/configureStore";
+
+const NodeBird = ({ Component }) => {
   return (
     <>
       <Head>
@@ -15,8 +17,8 @@ const Grape = ({ Component }) => {
   );
 };
 
-Grape.propTypes = {
+NodeBird.propTypes = {
   Component: PropTypes.elementType.isRequired,
 };
 
-export default Grape;
+export default wrapper.withRedux(NodeBird);
