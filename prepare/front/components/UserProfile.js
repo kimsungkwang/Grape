@@ -10,24 +10,23 @@ const UserProfile = () => {
     dispatch(logoutAction());
   }, []);
   return (
-    <Card>
-      <Card
-        actions={[
-          <div key="post">
-            포스트
-            <br />0
-          </div>,
-          <div key="following">
-            팔로잉
-            <br />0
-          </div>,
-          <div key="follower">
-            팔로워
-            <br />0
-          </div>,
-        ]}></Card>
+    <Card
+      actions={[
+        <div key="post">
+          포스트
+          <br />0
+        </div>,
+        <div key="following">
+          팔로잉
+          <br />0
+        </div>,
+        <div key="follower">
+          팔로워
+          <br />0
+        </div>,
+      ]}>
       <Card.Meta avatar={<Avatar>김성광</Avatar>} title="김성광" />
-      <Button onClick={onLogOut}>로그아웃</Button>
+      <Button onClick={onLogOut} style={{marginTop:10}}>로그아웃</Button>
     </Card>
   );
 };
