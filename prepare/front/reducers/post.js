@@ -18,7 +18,7 @@ export const initialState = {
           src: "https://file.mk.co.kr/meet/neds/2022/05/image_readtop_2022_428511_16526107615043320.jpg",
         },
       ],
-      Comment: [
+      Comments: [
         {
           User: {
             nickname: "홍길동",
@@ -44,7 +44,7 @@ const dummyPost = {
     nickname: "전우치",
   },
   Images: [],
-  Comment: [],
+  Comments: [],
 };
 
 const reducer = (state = initialState, action) => {
