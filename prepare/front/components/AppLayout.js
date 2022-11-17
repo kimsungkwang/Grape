@@ -8,7 +8,7 @@ import UserProfile from "../components/UserProfile";
 import LoginForm from "../components/LoginForm";
 
 const AppLayout = ({ children }) => {
-  const { me } = useSelector((state) => state.user.isLoggedIn);
+  const { me } = useSelector((state) => state.user);
 
   return (
     <div>
