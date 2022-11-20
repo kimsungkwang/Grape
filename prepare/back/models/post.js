@@ -1,0 +1,16 @@
+module.exports = (sequelize, DataTypes) => {
+    const Post = sequelize.define(
+      Post,
+      {
+        // id 는 기본적으로 들어가 있다.
+        content: {},
+      },
+      {
+        charset: "utf8mb4",
+        collate: "utf8mb4_general_ci", // 이모티콘 저장
+      }
+    );
+    Post.associate = (db) => {};
+    return Post;
+  };
+  
