@@ -2,7 +2,7 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const passport = require("passport");
 
-const { User } = require("../models");
+const { User, Post } = require("../models");
 
 const router = express.Router();
 
@@ -16,12 +16,31 @@ router.post("/login", (req, res, next) => {
     if (info) {
       return res.status(401).send(info.reason);
     }
-    return req.logIn(user, async (loginErr) => {
+    return req.login(user, async (loginErr) => {
       if (loginErr) {
         console.error(loginErr);
         return next(loginErr);
       }
-      return res.json(user); // 사용자 정보 프론트로 넘겨주기
+      const fullUserWithoutPassword = await User.findOne({
+        where: { id: user.id },
+        attributes: {
+          exclude: ["password"],
+        },
+        include: [
+          {
+            model: Post,
+          },
+          {
+            model: User,
+            as: "Followings",
+          },
+          {
+            model: User,
+            as: "Followers",
+          },
+        ],
+      });
+      return res.status(200).json(fullUserWithoutPassword); // 사용자 정보 프론트로 넘겨주기
     });
   })(req, res, next);
 });
@@ -51,6 +70,12 @@ router.post("/", async (req, res, next) => {
     console.log(error);
     next(error);
   }
+});
+
+router.post("/user/logout", (req, res) => {
+  console.log(req.user);
+  req.session.destroy(); // 세션 지우기
+  res.send("로그아웃 되었습니다.");
 });
 
 module.exports = router;

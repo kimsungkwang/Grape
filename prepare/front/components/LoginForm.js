@@ -8,7 +8,7 @@ import useInput from "../hooks/useInput";
 import { loginRequestAction } from "../reducers/user";
 
 const ButtonWrapper = styled.div`
-  margin-top: 10px;
+  margin-top: 20px;
 `;
 
 const FormWrapper = styled(Form)`

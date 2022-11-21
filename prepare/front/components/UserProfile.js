@@ -11,20 +11,24 @@ const UserProfile = () => {
   const onLogOut = useCallback(() => {
     dispatch(logoutRequestAction());
   }, []);
+
   return (
     <Card
       actions={[
         <div key="post">
           포스트
-          <br />{me.Posts.length}
+          <br />
+          {me.Posts.length}
         </div>,
         <div key="following">
           팔로잉
-          <br />{me.Followings.length}
+          <br />
+          {me.Followings.length}
         </div>,
         <div key="follower">
           팔로워
-          <br />{me.Followers.length}
+          <br />
+          {me.Followers.length}
         </div>,
       ]}>
       <Card.Meta avatar={<Avatar>{me.nickname[0]}</Avatar>} title={me.nickname} />

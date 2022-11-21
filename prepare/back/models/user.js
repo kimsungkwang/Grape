@@ -22,7 +22,6 @@ module.exports = (sequelize, DataTypes) => {
       collate: "utf8_general_ci", // 한글 저장
     }
   );
-  
   User.associate = (db) => {
     // 유저와 포스트 간 일대다 관계
     db.User.hasMany(db.Post);

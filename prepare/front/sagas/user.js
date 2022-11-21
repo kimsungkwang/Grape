@@ -29,7 +29,7 @@ function* logIn(action) {
     console.log(result);
     yield put({
       type: LOG_IN_SUCCESS,
-      data: action.data,
+      data: result.data,  // 로그인 오류 action.data가 아닌 result.data 였다.
     });
   } catch (err) {
     console.error(err);
