@@ -1,8 +1,9 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { Form, Input, Checkbox, Button } from "antd";
 import Head from "next/head";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
+import Router from "next/router";
 
 import AppLayout from "../components/AppLayout";
 import useInput from "../hooks/useInput";
@@ -18,7 +19,21 @@ TextInput.propTypes = {
 
 const Signup = () => {
   const dispatch = useDispatch();
-  const { signUpLoadung } = useSelector((state) => state.user);
+  const { signUpLoadung, signUpDone, signUpError } = useSelector((state) => state.user);
+
+  // 회원가입 완료 시 메인페이지로 보내주기
+  useEffect(() => {
+    if (signUpDone) {
+      Router.push("/");
+    }
+  }, [signUpDone]);
+
+  // 회원가입 에러 
+  useEffect(() => {
+    if (signUpError) {
+      alert(signUpError);
+    }
+  }, [signUpError]);
 
   const [passwordCheck, setPasswordCheck] = useState("");
   const [term, setTerm] = useState(false);

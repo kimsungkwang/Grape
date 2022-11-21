@@ -9,6 +9,8 @@ import { useSelector } from "react-redux";
 
 const Profile = () => {
   const { me } = useSelector((state) => state.user);
+
+  // 내 정보가 없으면 메인페이지로 되돌리기 
   useEffect(() => {
     if (!(me && me.id)) {
       Router.push("/");
