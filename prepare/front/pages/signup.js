@@ -19,12 +19,18 @@ TextInput.propTypes = {
 
 const Signup = () => {
   const dispatch = useDispatch();
-  const { signUpLoadung, signUpDone, signUpError } = useSelector((state) => state.user);
+  const { signUpLoadung, signUpDone, signUpError, me } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    if (me && me.id) {
+      Router.replace("/");
+    }
+  }, [me && me.id]);
 
   // 회원가입 완료 시 메인페이지로 보내주기
   useEffect(() => {
     if (signUpDone) {
-      Router.push("/");
+      Router.replace("/");
     }
   }, [signUpDone]);
 
