@@ -4,8 +4,10 @@ const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const passport = require("passport");
 const dotenv = require("dotenv");
+const morgan = require("morgan");
 
 const postRouter = require("./routes/post");
+const postsRouter = require("./routes/posts");
 const userRouter = require("./routes/user");
 const db = require("./models");
 const passportConfig = require("./passport");
@@ -21,6 +23,7 @@ db.sequelize
 
 passportConfig();
 
+app.use(morgan("dev"));
 app.use(
   cors({
     origin: true,
@@ -30,19 +33,22 @@ app.use(
 app.use(express.json()); // front에서 json 형태로 보냈을 때 json 형태의 데이터를 req.body 안에 넣어줌
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(process.env.COOKIE_SECRE));
-app.use(session({
-  saveUninitialized: false,
-  resave: false,
-  secret: process.env.COOKIE_SECRET,
-}));
+app.use(
+  session({
+    saveUninitialized: false,
+    resave: false,
+    secret: process.env.COOKIE_SECRET,
+  })
+);
 app.use(passport.initialize()); // passport 구동
-app.use(passport.session());  // session 연결
+app.use(passport.session()); // session 연결
 
 app.get("/", (req, res) => {
   res.send("hello Grape");
 });
 
 app.use("/post", postRouter);
+app.use("/posts", postsRouter);
 app.use("/user", userRouter);
 
 app.listen(3065, () => {

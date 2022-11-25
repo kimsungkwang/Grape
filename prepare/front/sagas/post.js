@@ -8,7 +8,6 @@ import {
   ADD_POST_FAILURE,
   ADD_POST_REQUEST,
   ADD_POST_SUCCESS,
-  generateDummyPost,
   LOAD_POSTS_FAILURE,
   LOAD_POSTS_REQUEST,
   LOAD_POSTS_SUCCESS,
@@ -19,16 +18,16 @@ import {
 import { ADD_POST_TO_ME, REMOVE_POST_OF_ME } from "../reducers/user";
 
 function loadPostsAPI(data) {
-  return axios.get("/api/posts", data);
+  return axios.get("/posts", data);
 }
 
 function* loadPosts(action) {
   try {
-    // const result = yield call(loadPostsAPI, action.data);
+    const result = yield call(loadPostsAPI, action.data);
     yield delay(1000);
     yield put({
       type: LOAD_POSTS_SUCCESS,
-      data: generateDummyPost(10),
+      data: result.data,
     });
   } catch (err) {
     console.error(err);
