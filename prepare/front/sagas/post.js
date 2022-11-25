@@ -1,5 +1,4 @@
 import axios from "axios";
-import shortId from "shortid";
 import { all, delay, fork, put, takeLatest, throttle, call } from "redux-saga/effects";
 
 import {
@@ -47,6 +46,7 @@ function addPostAPI(data) {
 function* addPost(action) {
   try {
     const result = yield call(addPostAPI, action.data);
+    console.log(result);
     yield put({
       type: ADD_POST_SUCCESS,
       data: result.data,
@@ -90,7 +90,7 @@ function* removePost(action) {
 }
 
 function addCommentAPI(data) {
-  return axios.post(`/post/${data.postId}/comment`, data);  // POST(작성)   /post/1/comment
+  return axios.post(`/post/${data.postId}/comment`, data); // POST(작성)   /post/1/comment
 }
 
 function* addComment(action) {

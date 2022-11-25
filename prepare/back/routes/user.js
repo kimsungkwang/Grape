@@ -4,7 +4,41 @@ const passport = require("passport");
 
 const { User, Post } = require("../models");
 const { isNotLoggedIn, isLoggedIn } = require("./middlewares");
+
 const router = express.Router();
+
+router.get("/", async (req, res, next) => {
+  //  GET   /user
+  try {
+    if (req.user) {
+      const fullUserWithoutPassword = await User.findOne({
+        where: { id: req.user.id },
+        attributes: {
+          exclude: ["password"],
+        },
+        include: [
+          {
+            model: Post,
+          },
+          {
+            model: User,
+            as: "Followings",
+          },
+          {
+            model: User,
+            as: "Followers",
+          },
+        ],
+      });
+      res.status(200).json(fullUserWithoutPassword);
+    } else {
+      res.status(200).json(null);
+    }
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
 
 // 로그인 (로그인 안한사람만 가능 isNotLoggedIn)
 // 미들웨어 확장

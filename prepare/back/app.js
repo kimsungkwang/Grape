@@ -24,7 +24,7 @@ passportConfig();
 app.use(
   cors({
     origin: true,
-    credentials: false,
+    credentials: true, // 쿠키도 같이 전달
   })
 );
 app.use(express.json()); // front에서 json 형태로 보냈을 때 json 형태의 데이터를 req.body 안에 넣어줌

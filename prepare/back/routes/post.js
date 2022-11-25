@@ -1,6 +1,6 @@
 const express = require("express");
 
-const { Post } = require("../models");
+const { Post, Image, Comment, User } = require("../models");
 const { isLoggedIn } = require("./middlewares");
 
 const router = express.Router();
@@ -10,9 +10,23 @@ router.post("/", isLoggedIn, async (req, res, next) => {
   try {
     const post = await Post.create({
       content: req.body.content,
-      UserId: req.body.id, // 게시물을 누가 썼는지
+      UserId: req.user.id,  // 게시물 누가 썼는지
     });
-    res.status(201).json(post);
+    const fullPost = await Post.findOne({
+      where: { id: post.id },
+      include: [
+        {
+          model: Image,
+        },
+        {
+          model: Comment,
+        },
+        {
+          model: User,
+        },
+      ],
+    });
+    res.status(201).json(fullPost);
   } catch (error) {
     console.error(error);
     next(error);
@@ -29,17 +43,17 @@ router.post("/:post.id/comment", isLoggedIn, async (req, res, next) => {
     if (!post) {
       return res.status(403).send("존재하지 않는 게시글입니다.");
     }
-    
-    const comment = await Comment.create({
-      content: req.body.content,
-      PostId: req.params.postId,
-      UserId: req.body.id,
-    });
-    res.status(201).json(comment);
+    res.status(201).json(post);
   } catch (error) {
     console.error(error);
     next(error);
   }
+
+  const comment = await Comment.create({
+    content: req.body.content,
+    PostId: req.params.postId,
+    UserId: req.body.id,
+  });
 });
 
 router.delete("/", isLoggedIn, (req, res) => {
