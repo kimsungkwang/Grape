@@ -145,4 +145,82 @@ router.patch("/nickname", isLoggedIn, async (req, res, next) => {
   }
 });
 
+// 팔로우
+router.patch("/:userId/follow", isLoggedIn, async (req, res, next) => {
+  // PAHCH  user/1/follow
+  try {
+    const user = await User.findOne({ where: { id: req.params.userId } });
+    if (!user) {
+      res.status(403).send("회원 정보가 없습니다.");
+    }
+    await user.addFollowers(req.user.id);
+    res.status(200).json({ UserId: parseInt(req.params.userId, 10) });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+// 언팔
+router.delete("/:userId/follow", isLoggedIn, async (req, res, next) => {
+  // DELOETE  user/1/follow
+  try {
+    const user = await User.findOne({ where: { id: req.params.userId } });
+    if (!user) {
+      res.status(403).send("회원 정보가 없습니다.");
+    }
+    await user.removeFollowers(req.user.id);
+    res.status(200).json({ UserId: parseInt(req.params.userId, 10) });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+// 팔로우 삭제
+router.delete("/follower/:userId", isLoggedIn, async (req, res, next) => {
+  // DELOETE  user/follower/2
+  try {
+    const user = await User.findOne({ where: { id: req.user.id } });  // 나를찾는다
+    if (!user) {
+      res.status(403).send("회원 정보가 없습니다.");
+    }
+    await user.removeFollowings(req.params.userId);
+    res.status(200).json({ UserId: parseInt(req.params.userId, 10) });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+router.get("/followers", isLoggedIn, async (req, res, next) => {
+  // GET  user/1/follow
+  try {
+    const user = await User.findOne({ where: { id: req.user.id } });  // 나를 찾고 
+    if (!user) {
+      res.status(403).send("회원 정보가 없습니다.");
+    }
+    const followers = await user.getFollowers();  // 팔로워들 가져와라 
+    res.status(200).json(followers);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+router.get("/followings", isLoggedIn, async (req, res, next) => {
+  // GET  user/1/follow
+  try {
+    const user = await User.findOne({ where: { id: req.user.id } });  // 나를 찾고 
+    if (!user) {
+      res.status(403).send("회원 정보가 없습니다.");
+    }
+    const followings = await user.getFollowings();  // 팔로워들 가져와라 
+    res.status(200).json(followings);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
 module.exports = router;
