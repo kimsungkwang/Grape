@@ -3,7 +3,7 @@ module.exports = (sequelize, DataTypes) => {
     "Comment",
     {
       // id 는 기본적으로 들어가 있다.
-      Comment: {
+      content: {
         type: DataTypes.TEXT,
         allowNull: false,
       },

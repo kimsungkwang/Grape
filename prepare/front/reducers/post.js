@@ -57,7 +57,7 @@ const reducer = (state = initialState, action) =>
         draft.loadPostsLoading = false;
         draft.loadPostsDone = true;
         draft.mainPosts = action.data.concat(draft.mainPosts);
-        draft.hasMorePosts = draft.mainPosts.length < 50;
+        draft.hasMorePosts = action.data.length === 10;
         break;
       case LOAD_POSTS_FAILURE:
         draft.loadPostsLoading = false;
@@ -99,6 +99,7 @@ const reducer = (state = initialState, action) =>
         break;
       case ADD_COMMENT_SUCCESS: {
         const post = draft.mainPosts.find((v) => v.id === action.data.PostId);
+        // 오류 = > find 에서 액션 데이터가 없었다 
         post.Comments.unshift(action.data);
         draft.addCommentLoading = false;
         draft.addCommentDone = true;

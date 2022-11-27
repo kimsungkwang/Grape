@@ -24,7 +24,6 @@ function loadPostsAPI(data) {
 function* loadPosts(action) {
   try {
     const result = yield call(loadPostsAPI, action.data);
-    yield delay(1000);
     yield put({
       type: LOAD_POSTS_SUCCESS,
       data: result.data,
@@ -100,6 +99,7 @@ function* addComment(action) {
       data: result.data,
     });
   } catch (err) {
+    console.error(err);
     yield put({
       type: ADD_COMMENT_FAILURE,
       data: err.response.data,

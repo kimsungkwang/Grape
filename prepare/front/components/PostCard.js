@@ -3,12 +3,11 @@ import PropTypes from "prop-types";
 import { Card, Button, Popover, Avatar, List, Comment } from "antd";
 import { RetweetOutlined, HeartTwoTone, HeartOutlined, MessageOutlined, EllipsisOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
-import Link from "next/link";
 
 import PostImages from "./PostImages";
 import CommentForm from "./CommentForm";
 import PostCardContent from "./PostCardContent";
-import FollowButton from './FollowButton';
+import FollowButton from "./FollowButton";
 import { REMOVE_POST_REQUEST } from "../reducers/post";
 
 const PostCard = ({ post }) => {
@@ -65,8 +64,7 @@ const PostCard = ({ post }) => {
             <EllipsisOutlined />
           </Popover>,
         ]}
-        extra={id && <FollowButton post={post} />}
-        >
+        extra={id && <FollowButton post={post} />}>
         <Card.Meta
           avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
           title={post.User.nickname}
@@ -82,24 +80,15 @@ const PostCard = ({ post }) => {
             dataSource={post.Comments}
             renderItem={(item) => (
               <li>
-                <Comment
-                  author={item.User.nickname}
-                  avatar={
-                    <Link href={{ pathname: "/user", query: { id: item.User.id } }} as={`/user/${item.User.id}`}>
-                      <a>
-                        <Avatar>{item.User.nickname[0]}</Avatar>
-                      </a>
-                    </Link>
-                  }
-                  content={item.content}
-                />
+                <Comment 
+                author={item.User.nickname} 
+                avatar={<Avatar>{item.User.nickname[0]}</Avatar>} 
+                content={item.content} />
               </li>
             )}
           />
         </div>
       )}
-      {/* <CommentForm />
-      <Comments /> */}
     </div>
   );
 };
@@ -109,9 +98,9 @@ PostCard.propTypes = {
     id: PropTypes.number,
     User: PropTypes.object,
     content: PropTypes.string,
-    createdAt: PropTypes.object,
-    Comments: PropTypes.arrayOf(PropTypes.any),
-    Images: PropTypes.arrayOf(PropTypes.any),
+    createdAt: PropTypes.string,
+    Comments: PropTypes.arrayOf(PropTypes.object),
+    Images: PropTypes.arrayOf(PropTypes.object),
   }).isRequired,
 };
 

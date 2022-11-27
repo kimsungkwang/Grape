@@ -47,8 +47,8 @@ app.get("/", (req, res) => {
   res.send("hello Grape");
 });
 
-app.use("/post", postRouter);
 app.use("/posts", postsRouter);
+app.use("/post", postRouter);
 app.use("/user", userRouter);
 
 app.listen(3065, () => {
