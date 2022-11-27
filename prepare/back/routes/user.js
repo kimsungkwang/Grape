@@ -117,15 +117,32 @@ router.post("/", isNotLoggedIn, async (req, res, next) => {
 // 로그아웃 (로그인 한 사람만 isLoggedIn)
 router.post("/logout", isLoggedIn, (req, res) => {
   req.logout(() => {});
-    // passport@0.6
-    //==> 로그인 할 때 마다 세션 쿠키가 변경되고 로그아웃 할 때도 세션 쿠키가 정리 되는 듯
-    //==> 콜백 함수 제공하고 그 안에서 응답
+  // passport@0.6
+  //==> 로그인 할 때 마다 세션 쿠키가 변경되고 로그아웃 할 때도 세션 쿠키가 정리 되는 듯
+  //==> 콜백 함수 제공하고 그 안에서 응답
 
-    // TypeError: Cannot read properties of undefined (reading 'regenerate') 이 에러 때문에 
-    // == > passport@0.5 로 바꿈  ;;;;;;;;;;
-    
+  // TypeError: Cannot read properties of undefined (reading 'regenerate') 이 에러 때문에
+  // == > passport@0.5 로 바꿈  ;;;;;;;;;;
+
   req.session.destroy(); // 세션 지우기
   res.send("ok");
+});
+
+router.patch("/nickname", isLoggedIn, async (req, res, next) => {
+  try {
+    await User.update(
+      {
+        nickname: req.body.nickname,
+      },
+      {
+        where: { id: req.user.id }, // 자신의 아이디를 수정
+      }
+    );
+    res.status(200).json({ nickname: req.body.nickname });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
 });
 
 module.exports = router;

@@ -32,10 +32,10 @@ router.post("/", isLoggedIn, async (req, res, next) => {
           attributes: ["id", "nickname"],
         },
         {
-          model: User, // 좋아요 누른 유저 
-          as: 'Likers',
+          model: User, // 좋아요 누른 유저
+          as: "Likers",
           attributes: ["id"],
-        }
+        },
       ],
     });
     res.status(201).json(fullPost);
@@ -76,7 +76,7 @@ router.post("/:postId/comment", isLoggedIn, async (req, res, next) => {
   }
 });
 
-router.patch("/:postId/like", async (req, res, next) => {
+router.patch("/:postId/like", isLoggedIn, async (req, res, next) => {
   // PATCH    /post/1/like
   try {
     const post = await Post.findOne({
@@ -86,14 +86,14 @@ router.patch("/:postId/like", async (req, res, next) => {
       return res.status(403).send("게시글이 존재하지 않습니다.");
     }
     await post.addLikers(req.user.id);
-    res.json({ PostId: post.id, UserId: req.user.id }); // 프론트 정보 
+    res.json({ PostId: post.id, UserId: req.user.id }); // 프론트 정보
   } catch (error) {
     console.error(error);
     next(error);
   }
 });
 
-router.delete("/:postId/like", async (req, res, next) => {
+router.delete("/:postId/like", isLoggedIn, async (req, res, next) => {
   // DELETE   /post/1/like
   try {
     const post = await Post.findOne({
@@ -103,16 +103,27 @@ router.delete("/:postId/like", async (req, res, next) => {
       return res.status(403).send("게시글이 존재하지 않습니다.");
     }
     await post.removeLikers(req.user.id);
-    res.json({ PostId: post.id, UserId: req.user.id }); // 프론트 정보 
+    res.json({ PostId: post.id, UserId: req.user.id }); // 프론트 정보
   } catch (error) {
     console.error(error);
     next(error);
   }
 });
 
-router.delete("/", isLoggedIn, (req, res) => {
+router.delete("/:postId", isLoggedIn, async (req, res) => {
   // DELETE   /post
-  res.json({ id: 1 });
+  try {
+    await Post.destroy({
+      where: {
+        id: req.params.postId,
+        UserId: req.user.id,
+      },
+    });
+    res.status(200).json({ PostId: parseInt(req.params.postId, 10) });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
 });
 
 module.exports = router;
