@@ -25,6 +25,10 @@ router.get("/", async (req, res, next) => {
           model: User,
           attributes: ["id", "nickname"],   // 비밀번호 뺴고 가져오기
         }]
+      }, {
+        model: User, 
+        as: "Likers",
+        attributes: ["id"],
       }],
     });
     console.log(posts);
