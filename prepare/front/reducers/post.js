@@ -25,6 +25,9 @@ export const initialState = {
   uploadImagesLoading: false,
   uploadImagesDone: false,
   uploadImagesError: null,
+  repostLoading: false,
+  repostDone: false,
+  repostError: null,
 };
 
 export const LOAD_POSTS_REQUEST = "LOAD_POSTS_REQUEST";
@@ -54,6 +57,10 @@ export const UNLIKE_POST_FAILURE = "UNLIKE_POST_FAILURE";
 export const UPLOAD_IMAGES_REQUEST = "UPLOAD_IMAGES_REQUEST";
 export const UPLOAD_IMAGES_SUCCESS = "UPLOAD_IMAGES_SUCCESS";
 export const UPLOAD_IMAGES_FAILURE = "UPLOAD_IMAGES_FAILURE";
+
+export const REPOST_REQUEST = "REPOST_REQUEST";
+export const REPOST_SUCCESS = "REPOST_SUCCESS";
+export const REPOST_FAILURE = "REPOST_FAILURE";
 
 export const REMOVE_IMAGE = "REMOVE_IMAGE";
 
@@ -191,6 +198,21 @@ const reducer = (state = initialState, action) =>
       case UPLOAD_IMAGES_FAILURE:
         draft.uploadImagesLoading = false;
         draft.uploadImagesError = action.error;
+        break;
+      case REPOST_REQUEST:
+        draft.repostLoading = true;
+        draft.repostDone = false;
+        draft.retpostrror = null;
+        break;
+      case REPOST_SUCCESS: {
+        draft.repostLoading = false;
+        draft.repostDone = true;
+        draft.mainPosts.unshift(action.data);
+        break;
+      }
+      case REPOST_FAILURE:
+        draft.repostLoading = false;
+        draft.repostError = action.error;
         break;
       case REMOVE_IMAGE:
         draft.imagePaths = draft.imagePaths.filter((v, i) => i !== action.data);

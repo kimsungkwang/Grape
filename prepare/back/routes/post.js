@@ -39,19 +39,24 @@ router.post("/", isLoggedIn, upload.none(), async (req, res, next) => {
       UserId: req.user.id, // 게시물 누가 썼는지
     });
     if (hashtags) {
-      const result = await Promise.all(hashtags.map((tag) => Hashtag.findOrCreate({ 
-        where : {name: tag.slice(1).toLowerCase()} })));
-        await post.addHashtags(result.mao((v) => v[0]));
+      const result = await Promise.all(
+        hashtags.map((tag) =>
+          Hashtag.findOrCreate({
+            where: { name: tag.slice(1).toLowerCase() },
+          })
+        )
+      );
+      await post.addHashtags(result.mao((v) => v[0]));
     }
-    if ((req.body.image)) {
+    if (req.body.image) {
       if (Array.isArray(req.body.image)) {
         // 이미지를 여러개 올리면 배열로 올라간다
         const images = await Promise.app(req.body.imnage.map((image) => Image.create({ src: image })));
-        await post.addImages(images)
+        await post.addImages(images);
       } else {
         // 이미지 하나만 올리면 주소로
         const image = await Image.create({ src: req.body.image });
-        await post.addImages(image)
+        await post.addImages(image);
       }
     }
     const fullPost = await Post.findOne({
@@ -78,6 +83,16 @@ router.post("/", isLoggedIn, upload.none(), async (req, res, next) => {
           as: "Likers",
           attributes: ["id"],
         },
+        {
+          model: Post,
+          as: 'Repost',
+          include: [{
+            model: User,
+            attributes: ['id', 'nickname'],
+          }, {
+            model: Image,
+          }]
+        },
       ],
     });
     res.status(201).json(fullPost);
@@ -92,6 +107,73 @@ router.post("/images", isLoggedIn, upload.array("image"), (req, res, next) => {
   // POST /post/images
   console.log(req.files);
   res.json(req.files.map((v) => v.filename));
+});
+
+// repost
+router.post("/:postId/repost", isLoggedIn, async (req, res, next) => {
+  // POST   /post/1/repost
+  try {
+    const post = await Post.findOne({
+      where: { id: req.params.postId },
+      include: [{
+        model: Post,
+        as: "Repost",
+      }]
+    });
+    if (!post) {
+      return res.status(403).send("존재하지 않는 게시글입니다.");
+    }
+    if (req.user.id === post.UserId || (post.Repost && post.Repost.UserId === req.user.id)) {
+      return res.status(403).send('자신의 글은 리포스트 할 수 없습니다.');
+    }
+    const repostTargetId = post.RepostId || post.id;
+    const exPost = await Post.findOne({
+      where: {
+        UserId: req.user.id,
+        RepostId: repostTargetId,
+      },
+    });
+    if (exPost) {
+      return res.status(403).send('이미 리포스트했습니다.');
+    }
+    const repost = await Post.create({
+      UserId: req.user.id,
+      RepostId: repostTargetId,
+      content: 'repost',
+    });
+    const repostWithPrevPost = await Post.findOne({
+      where: { id: repost.id },
+      include: [{
+        model: Post,
+        as: 'Repost',
+        include: [{
+          model: User,
+          attributes: ['id', 'nickname'],
+        }, {
+          model: Image,
+        }]
+      }, {
+        model: User,
+        attributes: ['id', 'nickname'],
+      }, {
+        model: User,  // 좋아요 누른 유저
+        as : "Likers",
+        attributes: ["id"],
+      },{
+        model: Image,
+      }, {
+        model: Comment,
+        include: [{
+          model: User,
+          attributes: ['id', 'nickname'],
+        }],
+      }],
+    })
+    res.status(201).json(repostWithPrevPost);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
 });
 
 // 파라미터 : 주소 부분에서 동적으로 변하는 부분 -> :post.id

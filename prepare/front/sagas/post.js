@@ -1,5 +1,5 @@
 import axios from "axios";
-import { all, delay, fork, put, takeLatest, throttle, call } from "redux-saga/effects";
+import { all, fork, put, takeLatest, throttle, call } from "redux-saga/effects";
 
 import {
   ADD_COMMENT_FAILURE,
@@ -23,6 +23,9 @@ import {
   UPLOAD_IMAGES_FAILURE,
   UPLOAD_IMAGES_REQUEST,
   UPLOAD_IMAGES_SUCCESS,
+  REPOST_FAILURE,
+  REPOST_REQUEST,
+  REPOST_SUCCESS,
 } from "../reducers/post";
 import { ADD_POST_TO_ME, REMOVE_POST_OF_ME } from "../reducers/user";
 
@@ -41,7 +44,7 @@ function* loadPosts(action) {
     console.error(err);
     yield put({
       type: LOAD_POSTS_FAILURE,
-      data: err.response.data,
+      error: err.response.data,
     });
   }
 }
@@ -66,7 +69,7 @@ function* addPost(action) {
     console.error(err);
     yield put({
       type: ADD_POST_FAILURE,
-      data: err.response.data,
+      error: err.response.data,
     });
   }
 }
@@ -90,7 +93,7 @@ function* removePost(action) {
     console.error(err);
     yield put({
       type: REMOVE_POST_FAILURE,
-      data: err.response.data,
+      error: err.response.data,
     });
   }
 }
@@ -110,7 +113,7 @@ function* addComment(action) {
     console.error(err);
     yield put({
       type: ADD_COMMENT_FAILURE,
-      data: err.response.data,
+      error: err.response.data,
     });
   }
 }
@@ -175,6 +178,26 @@ function* uploadImages(action) {
   }
 }
 
+function repostAPI(data) {
+  return axios.post(`/post/${data}/repost`);
+}
+
+function* repost(action) {
+  try {
+    const result = yield call(repostAPI, action.data);
+    yield put({
+      type: REPOST_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: REPOST_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
 function* watchLoadPosts() {
   yield throttle(5000, LOAD_POSTS_REQUEST, loadPosts);
 }
@@ -203,6 +226,10 @@ function* watchUploadImages() {
   yield takeLatest(UPLOAD_IMAGES_REQUEST, uploadImages);
 }
 
+function* watchRepost() {
+  yield takeLatest(REPOST_REQUEST, repost);
+}
+
 export default function* postSaga() {
   yield all([
     fork(watchAddPost),
@@ -212,5 +239,6 @@ export default function* postSaga() {
     fork(watchLikePost),
     fork(watchUnlikePost),
     fork(watchUploadImages),
+    fork(watchRepost),
   ]);
 }
