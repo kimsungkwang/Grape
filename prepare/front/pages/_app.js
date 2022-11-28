@@ -5,7 +5,7 @@ import "antd/dist/antd.css";
 
 import wrapper from "../store/configureStore";
 
-const NodeBird = ({ Component }) => {
+const Grape = ({ Component }) => {
   return (
     <>
       <Head>
@@ -17,8 +17,8 @@ const NodeBird = ({ Component }) => {
   );
 };
 
-NodeBird.propTypes = {
+Grape.propTypes = {
   Component: PropTypes.elementType.isRequired,
 };
 
-export default wrapper.withRedux(NodeBird);
+export default wrapper.withRedux(Grape);
