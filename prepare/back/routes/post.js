@@ -51,7 +51,7 @@ router.post("/", isLoggedIn, upload.none(), async (req, res, next) => {
     if (req.body.image) {
       if (Array.isArray(req.body.image)) {
         // 이미지를 여러개 올리면 배열로 올라간다
-        const images = await Promise.app(req.body.imnage.map((image) => Image.create({ src: image })));
+        const images = await Promise.all(req.body.image.map((image) => Image.create({ src: image })));
         await post.addImages(images);
       } else {
         // 이미지 하나만 올리면 주소로
