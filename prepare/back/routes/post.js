@@ -85,13 +85,16 @@ router.post("/", isLoggedIn, upload.none(), async (req, res, next) => {
         },
         {
           model: Post,
-          as: 'Repost',
-          include: [{
-            model: User,
-            attributes: ['id', 'nickname'],
-          }, {
-            model: Image,
-          }]
+          as: "Repost",
+          include: [
+            {
+              model: User,
+              attributes: ["id", "nickname"],
+            },
+            {
+              model: Image,
+            },
+          ],
         },
       ],
     });
@@ -109,40 +112,17 @@ router.post("/images", isLoggedIn, upload.array("image"), (req, res, next) => {
   res.json(req.files.map((v) => v.filename));
 });
 
-// repost
-router.post("/:postId/repost", isLoggedIn, async (req, res, next) => {
-  // POST   /post/1/repost
+// 게시글 가져오기
+router.get('/:postId', async (req, res, next) => { // GET /post/1
   try {
     const post = await Post.findOne({
       where: { id: req.params.postId },
-      include: [{
-        model: Post,
-        as: "Repost",
-      }]
     });
     if (!post) {
-      return res.status(403).send("존재하지 않는 게시글입니다.");
+      return res.status(404).send('존재하지 않는 게시글입니다.');
     }
-    if (req.user.id === post.UserId || (post.Repost && post.Repost.UserId === req.user.id)) {
-      return res.status(403).send('자신의 글은 리포스트 할 수 없습니다.');
-    }
-    const repostTargetId = post.RepostId || post.id;
-    const exPost = await Post.findOne({
-      where: {
-        UserId: req.user.id,
-        RepostId: repostTargetId,
-      },
-    });
-    if (exPost) {
-      return res.status(403).send('이미 리포스트했습니다.');
-    }
-    const repost = await Post.create({
-      UserId: req.user.id,
-      RepostId: repostTargetId,
-      content: 'repost',
-    });
-    const repostWithPrevPost = await Post.findOne({
-      where: { id: repost.id },
+    const fullPost = await Post.findOne({
+      where: { id: post.id },
       include: [{
         model: Post,
         as: 'Repost',
@@ -156,10 +136,10 @@ router.post("/:postId/repost", isLoggedIn, async (req, res, next) => {
         model: User,
         attributes: ['id', 'nickname'],
       }, {
-        model: User,  // 좋아요 누른 유저
-        as : "Likers",
-        attributes: ["id"],
-      },{
+        model: User,
+        as: 'Likers',
+        attributes: ['id', 'nickname'],
+      }, {
         model: Image,
       }, {
         model: Comment,
@@ -169,6 +149,86 @@ router.post("/:postId/repost", isLoggedIn, async (req, res, next) => {
         }],
       }],
     })
+    res.status(200).json(fullPost);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+// repost
+router.post("/:postId/repost", isLoggedIn, async (req, res, next) => {
+  // POST   /post/1/repost
+  try {
+    const post = await Post.findOne({
+      where: { id: req.params.postId },
+      include: [
+        {
+          model: Post,
+          as: "Repost",
+        },
+      ],
+    });
+    if (!post) {
+      return res.status(403).send("존재하지 않는 게시글입니다.");
+    }
+    if (req.user.id === post.UserId || (post.Repost && post.Repost.UserId === req.user.id)) {
+      return res.status(403).send("자신의 글은 리포스트 할 수 없습니다.");
+    }
+    const repostTargetId = post.RepostId || post.id;
+    const exPost = await Post.findOne({
+      where: {
+        UserId: req.user.id,
+        RepostId: repostTargetId,
+      },
+    });
+    if (exPost) {
+      return res.status(403).send("이미 리포스트했습니다.");
+    }
+    const repost = await Post.create({
+      UserId: req.user.id,
+      RepostId: repostTargetId,
+      content: "repost",
+    });
+    const repostWithPrevPost = await Post.findOne({
+      where: { id: repost.id },
+      include: [
+        {
+          model: Post,
+          as: "Repost",
+          include: [
+            {
+              model: User,
+              attributes: ["id", "nickname"],
+            },
+            {
+              model: Image,
+            },
+          ],
+        },
+        {
+          model: User,
+          attributes: ["id", "nickname"],
+        },
+        {
+          model: User, // 좋아요 누른 유저
+          as: "Likers",
+          attributes: ["id"],
+        },
+        {
+          model: Image,
+        },
+        {
+          model: Comment,
+          include: [
+            {
+              model: User,
+              attributes: ["id", "nickname"],
+            },
+          ],
+        },
+      ],
+    });
     res.status(201).json(repostWithPrevPost);
   } catch (error) {
     console.error(error);

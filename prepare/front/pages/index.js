@@ -14,7 +14,7 @@ import wrapper from '../store/configureStore';
 function Home() {
   const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);
-  const { mainPosts, hasMorePosts, loadPostsLoading, retweetError } = useSelector((state) => state.post);
+  const { mainPosts, hasMorePosts, loadPostsLoading, repostError } = useSelector((state) => state.post);
   const [ref, inView] = useInView();
 
   useEffect(
@@ -31,10 +31,10 @@ function Home() {
   );
 
   useEffect(() => {
-    if (retweetError) {
-      alert(retweetError);
+    if (repostError) {
+      alert(repostError);
     }
-  }, [retweetError]);
+  }, [repostError]);
 
   return (
     <AppLayout>

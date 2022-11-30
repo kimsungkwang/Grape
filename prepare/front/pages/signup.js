@@ -4,10 +4,13 @@ import Head from "next/head";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import Router from "next/router";
+import axios from "axios";
+import { END } from "redux-saga";
 
 import AppLayout from "../components/AppLayout";
 import useInput from "../hooks/useInput";
-import { SIGN_UP_REQUEST } from "../reducers/user";
+import { SIGN_UP_REQUEST, LOAD_MY_INFO_REQUEST } from "../reducers/user";
+import wrapper from "../store/configureStore";
 
 const TextInput = ({ value }) => {
   return <div>{value}</div>;
@@ -23,6 +26,7 @@ const Signup = () => {
 
   useEffect(() => {
     if (me && me.id) {
+      alert("이미 회원입니다!");
       Router.replace("/");
     }
   }, [me && me.id]);
@@ -30,11 +34,12 @@ const Signup = () => {
   // 회원가입 완료 시 메인페이지로 보내주기
   useEffect(() => {
     if (signUpDone) {
+      alert("회원가입 완료! 로그인 해주세요");
       Router.replace("/");
     }
   }, [signUpDone]);
 
-  // 회원가입 에러 
+  // 회원가입 에러
   useEffect(() => {
     if (signUpError) {
       alert(signUpError);
@@ -122,5 +127,21 @@ const Signup = () => {
     </>
   );
 };
+
+export const getServerSideProps = wrapper.getServerSideProps((store) => async ({ req }) => {
+  console.log("getServerSideProps start");
+  console.log(req.headers);
+  const cookie = req ? req.headers.cookie : "";
+  axios.defaults.headers.Cookie = "";
+  if (req && cookie) {
+    axios.defaults.headers.Cookie = cookie;
+  }
+  store.dispatch({
+    type: LOAD_MY_INFO_REQUEST,
+  });
+  store.dispatch(END);
+  console.log("getServerSideProps end");
+  await store.sagaTask.toPromise();
+});
 
 export default Signup;
