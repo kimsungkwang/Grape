@@ -1,7 +1,7 @@
 {
   "/_app": "pages/_app.js",
-  "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/signup": "pages/signup.js",
-  "/profile": "pages/profile.js"
+  "/_error": "pages/_error.js",
+  "/user/[id]": "pages/user/[id].js",
+  "/hashtag/[tag]": "pages/hashtag/[tag].js"
 }

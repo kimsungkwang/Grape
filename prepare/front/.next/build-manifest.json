@@ -24,15 +24,15 @@
       "static/chunks/webpack.js",
       "static/chunks/pages/_error.js"
     ],
-    "/profile": [
+    "/hashtag/[tag]": [
       "static/chunks/main.js",
       "static/chunks/webpack.js",
-      "static/chunks/pages/profile.js"
+      "static/chunks/pages/hashtag/[tag].js"
     ],
-    "/signup": [
+    "/user/[id]": [
       "static/chunks/main.js",
       "static/chunks/webpack.js",
-      "static/chunks/pages/signup.js"
+      "static/chunks/pages/user/[id].js"
     ]
   },
   "ampFirstPages": []
