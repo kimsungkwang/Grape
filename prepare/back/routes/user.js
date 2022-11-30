@@ -90,6 +90,7 @@ router.post("/login", isNotLoggedIn, (req, res, next) => {
 router.post("/", isNotLoggedIn, async (req, res, next) => {
   // POST /user/
   try {
+    // 이메일 중복검사
     const exUser = await User.findOne({
       where: {
         email: req.body.email,
@@ -97,6 +98,16 @@ router.post("/", isNotLoggedIn, async (req, res, next) => {
     });
     if (exUser) {
       return res.status(403).send("이미 사용중인 이메일 입니다.");
+    }
+
+    // 닉네임 중복검사
+    const exUserNickname = await User.findOne({
+      where: {
+        nickname: req.body.nickname,
+      },
+    });
+    if (exUserNickname) {
+      return res.status(403).send("이미 사용중인 닉네임 입니다.");
     }
 
     const hashedPassword = await bcrypt.hash(req.body.password, 10); // 비밀번호 hash화
@@ -130,6 +141,14 @@ router.post("/logout", isLoggedIn, (req, res) => {
 
 router.patch("/nickname", isLoggedIn, async (req, res, next) => {
   try {
+    const exUserNickname = await User.findOne({
+      where: {
+        nickname: req.body.nickname,
+      },
+    });
+    if (exUserNickname) {
+      return res.status(403).send("이미 사용중인 닉네임 입니다.");
+    }
     await User.update(
       {
         nickname: req.body.nickname,

@@ -22,8 +22,9 @@ TextInput.propTypes = {
 
 const Signup = () => {
   const dispatch = useDispatch();
-  const { signUpLoadung, signUpDone, signUpError, me } = useSelector((state) => state.user);
+  const { signUpLoadung, signUpDone, signUpError, changeNicknameError, me } = useSelector((state) => state.user);
 
+  // 로그인 한 상태로 회원가입 페이지 들어 갔을 시
   useEffect(() => {
     if (me && me.id) {
       alert("이미 회원입니다!");
@@ -45,6 +46,12 @@ const Signup = () => {
       alert(signUpError);
     }
   }, [signUpError]);
+
+  useEffect(() => {
+    if (changeNicknameError) {
+      alert(changeNicknameError);
+    }
+  }, [changeNicknameError]);
 
   const [passwordCheck, setPasswordCheck] = useState("");
   const [term, setTerm] = useState(false);
