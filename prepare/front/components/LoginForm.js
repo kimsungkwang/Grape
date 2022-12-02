@@ -49,9 +49,12 @@ const LoginForm = () => {
         <Button type="primary" htmlType="submit" loading={logInLoading}>
           로그인
         </Button>
+        <Button htmlType="submit" loading={logInLoading}>
+          카카오톡 로그인
+        </Button>
         <Link href="/signup">
           <a>
-            <Button>회원가입</Button>
+            <Button>가입하기</Button>
           </a>
         </Link>
       </ButtonWrapper>

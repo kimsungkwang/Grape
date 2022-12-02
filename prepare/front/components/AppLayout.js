@@ -1,37 +1,45 @@
-import React from "react";
-import PropTypes from "prop-types";
-import Link from "next/link";
-import { Input, Menu, Row, Col } from "antd";
-import { useSelector } from "react-redux";
+import React, { useCallback } from 'react';
+import PropTypes from 'prop-types';
+import Link from 'next/link';
+import { Menu, Input, Row, Col } from 'antd';
+import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+import Router, { useRouter } from 'next/router';
 
-import UserProfile from "../components/UserProfile";
-import LoginForm from "../components/LoginForm";
+import UserProfile from './UserProfile';
+import LoginForm from './LoginForm';
+import useInput from '../hooks/useInput';
 
-const AppLayout = ({ children }) => {
+const SearchInput = styled(Input.Search)`
+  vertical-align: middle;
+`;
+
+function AppLayout({ children }) {
+  const [searchInput, onChangeSearchInput] = useInput('');
+  const router = useRouter();
   const { me } = useSelector((state) => state.user);
+
+  const onSearch = useCallback(() => {
+    Router.push(`/hashtag/${searchInput}`);
+  }, [searchInput]);
 
   return (
     <div>
-      <Menu mode="horizontal">
-        <Menu.Item>
-          <Link href="/">
-            <a>Grape</a>
-          </Link>
-        </Menu.Item>
-        <Menu.Item>
-          <Link href="/profile">
-            <a>프로필</a>
-          </Link>
-        </Menu.Item>
-        <Menu.Item>
-          <Link href="/signup">
-            <a>회원가입</a>
-          </Link>
-        </Menu.Item>
-        <Menu.Item>
-          <Input.Search enterButton style={{ marginTop: 10 }} />
-        </Menu.Item>
-      </Menu>
+      <Menu
+        mode="horizontal"
+        selectedKeys={[router.pathname]}
+        items={[
+          { label: <Link href="/"><a>Grape</a></Link>, key: '/' },
+          { label: <Link href="/profile"><a>프로필</a></Link>, key: '/profile' },
+          { label: <SearchInput
+            enterButton
+            value={searchInput}
+            onChange={onChangeSearchInput}
+            onSearch={onSearch}
+          />,
+          key: '/search' },
+        ]}
+      />
       <Row gutter={8}>
         <Col xs={24} md={6}>
           {me ? <UserProfile /> : <LoginForm />}
@@ -40,14 +48,12 @@ const AppLayout = ({ children }) => {
           {children}
         </Col>
         <Col xs={24} md={6}>
-          <a href="https://github.com/kimsungkwang/Grape" target="_blank" rel="noreferrer noopener">
-            Made by Kimsungkwang
-          </a>
+          <a href="https://www.zerocho.com" target="_blank" rel="noreferrer noopener">Made by KimsungKwang</a>
         </Col>
       </Row>
     </div>
   );
-};
+}
 
 AppLayout.propTypes = {
   children: PropTypes.node.isRequired,

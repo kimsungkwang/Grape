@@ -22,15 +22,15 @@ TextInput.propTypes = {
 
 const Signup = () => {
   const dispatch = useDispatch();
-  const { signUpLoadung, signUpDone, signUpError, changeNicknameError, me } = useSelector((state) => state.user);
+  const { signUpLoadung, signUpDone, signUpError, changeNicknameError, } = useSelector((state) => state.user);
 
   // 로그인 한 상태로 회원가입 페이지 들어 갔을 시
-  useEffect(() => {
-    if (me && me.id) {
-      alert("이미 회원입니다!");
-      Router.replace("/");
-    }
-  }, [me && me.id]);
+  // useEffect(() => {
+  //   if (me && me.id) {
+  //     alert("이미 회원입니다!");
+  //     Router.replace("/");
+  //   }
+  // }, [me && me.id]);
 
   // 회원가입 완료 시 메인페이지로 보내주기
   useEffect(() => {
