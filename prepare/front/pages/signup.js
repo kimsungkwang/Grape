@@ -1,16 +1,43 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { Form, Input, Checkbox, Button } from "antd";
+import Image from "next/image";
 import Head from "next/head";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import Router from "next/router";
 import axios from "axios";
 import { END } from "redux-saga";
+import styled from "styled-components";
 
-import AppLayout from "../components/AppLayout";
+import Logo from "../public/favicon.png";
 import useInput from "../hooks/useInput";
 import { SIGN_UP_REQUEST, LOAD_MY_INFO_REQUEST } from "../reducers/user";
 import wrapper from "../store/configureStore";
+
+const CheckboxStyle = styled.div`
+  text-align: center;
+  margin-top: 10px;
+`;
+const ButtonWrapper = styled.div`
+  margin: 0 auto;
+  text-align: center;
+`;
+
+const FormWrapper = styled(Form)`
+  padding: 20px;
+  width: 500px;
+  height: 500px;
+  margin: 0 auto;
+`;
+
+const LogoAndTitle = styled.div`
+  margin-top: 10px;
+  padding: 100px;
+  width: 300px;
+  height: 300px;
+  margin: 0 auto;
+  text-align: center;
+`;
 
 const TextInput = ({ value }) => {
   return <div>{value}</div>;
@@ -22,7 +49,7 @@ TextInput.propTypes = {
 
 const Signup = () => {
   const dispatch = useDispatch();
-  const { signUpLoadung, signUpDone, signUpError, changeNicknameError, } = useSelector((state) => state.user);
+  const { signUpLoadung, signUpDone, signUpError, changeNicknameError } = useSelector((state) => state.user);
 
   // 로그인 한 상태로 회원가입 페이지 들어 갔을 시
   // useEffect(() => {
@@ -94,43 +121,53 @@ const Signup = () => {
       <Head>
         <title>회원가입 | Grape</title>
       </Head>
-      <AppLayout>
-        <Form onFinish={onSubmit} style={{ padding: 10 }}>
-          {/* <TextInput value="135135" /> */}
-          <div>
-            <label htmlFor="user-email">아이디</label>
-            <br />
-            <Input name="user-email" type="email" value={email} required onChange={onChangeEmail} />
-          </div>
-          <div>
-            <label htmlFor="user-nick">닉네임</label>
-            <br />
-            <Input name="user-nick" value={nickname} required onChange={onChangeNickname} />
-          </div>
-          <div>
-            <label htmlFor="user-password">비밀번호</label>
-            <br />
-            <Input name="user-password" type="password" value={password} required onChange={onChangePassword} />
-          </div>
-          <div>
-            <label htmlFor="user-password-check">비밀번호체크</label>
-            <br />
-            <Input name="user-password-check" type="password" value={passwordCheck} required onChange={onChangePasswordCheck} />
-            {passwordError && <div style={{ color: "red" }}>비밀번호가 일치하지 않습니다.</div>}
-          </div>
-          <div>
+      <LogoAndTitle>
+        <div className="flex-center flex-col">
+          <Image src={Logo} width={100} height={100} />
+          <h1 className="text-3xl mt-4 italic">Grape</h1>
+        </div>
+        <div>
+          <p className="sm:text-4xl text-xl">포도 포도 포도</p>
+        </div>
+      </LogoAndTitle>
+      <FormWrapper onFinish={onSubmit} style={{ padding: 10 }}>
+        <div>
+          <label htmlFor="user-email">아이디</label>
+          <br />
+          <Input name="user-email" type="email" value={email} required onChange={onChangeEmail} />
+        </div>
+        <div>
+          <label htmlFor="user-nick">닉네임</label>
+          <br />
+          <Input name="user-nick" value={nickname} required onChange={onChangeNickname} />
+        </div>
+        <div>
+          <label htmlFor="user-password">비밀번호</label>
+          <br />
+          <Input name="user-password" type="password" value={password} required onChange={onChangePassword} />
+        </div>
+        <div>
+          <label htmlFor="user-password-check">비밀번호체크</label>
+          <br />
+          <Input name="user-password-check" type="password" value={passwordCheck} required onChange={onChangePasswordCheck} />
+          {passwordError && <div style={{ color: "red" }}>비밀번호가 일치하지 않습니다.</div>}
+        </div>
+        <div>
+          <CheckboxStyle>
             <Checkbox name="user-term" checked={term} onChange={onChangeTerm}>
-              동의합니다.
+              재밌고 즐겁게 이용해주세요.
             </Checkbox>
-            {termError && <div style={{ color: "red" }}>약관에 동의하셔야 합니다.</div>}
-          </div>
-          <div style={{ marginTop: 10 }}>
+          </CheckboxStyle>
+          {termError && <div style={{ color: "red" }}>동의하셔야 합니다.</div>}
+        </div>
+        <div style={{ marginTop: 10 }}>
+          <ButtonWrapper>
             <Button loading={signUpLoadung} type="primary" htmlType="submit">
               가입하기
             </Button>
-          </div>
-        </Form>
-      </AppLayout>
+          </ButtonWrapper>
+        </div>
+      </FormWrapper>
     </>
   );
 };

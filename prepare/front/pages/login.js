@@ -12,7 +12,6 @@ import Logo from "../public/favicon.png";
 import useInput from "../hooks/useInput";
 import { loginRequestAction } from "../reducers/user";
 
-
 const SignLink = styled.div`
   text-align: center;
   margin-top: 10px;
@@ -130,8 +129,9 @@ const Login = () => {
               로그인
             </Button>
           </ButtonWrapper>
+          <SignLink> 회원이 아니신가요? </SignLink>
           <SignLink>
-            Or <a href="/signup"> 회원가입 </a> 하기 !!
+            <a href="/signup"> 회원가입 </a> 하기 !!
           </SignLink>
         </Form.Item>
       </FormWrapper>
