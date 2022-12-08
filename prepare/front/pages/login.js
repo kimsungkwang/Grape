@@ -7,14 +7,11 @@ import styled from "styled-components";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 
-import wrapper from "../store/configureStore";
-import axios from "axios";
 import Logo from "../public/favicon.png";
 // import Kakao from "../public/kakao2.png";
 import useInput from "../hooks/useInput";
 import { loginRequestAction } from "../reducers/user";
-import { LOAD_MY_INFO_REQUEST } from "../reducers/user";
-import { END } from "redux-saga";
+
 
 const SignLink = styled.div`
   text-align: center;
