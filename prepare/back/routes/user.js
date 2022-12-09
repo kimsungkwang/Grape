@@ -243,6 +243,7 @@ router.post("/logout", isLoggedIn, (req, res) => {
   // == > passport@0.5 로 바꿈  ;;;;;;;;;;
 
   req.session.destroy(); // 세션 지우기
+  req.
   res.send("ok");
 });
 

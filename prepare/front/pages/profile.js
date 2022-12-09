@@ -29,7 +29,7 @@ const Profile = () => {
   useEffect(() => {
     if (!(me && me.id)) {
       alert("로그인 해주세요!")
-      Router.push("/");
+      Router.push("/login");
     }
   }, [me && me.id]);
 
