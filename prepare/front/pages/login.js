@@ -156,6 +156,17 @@ export const getServerSideProps = wrapper.getServerSideProps((store) => async ({
   store.dispatch(END);
   console.log('getServerSideProps end');
   await store.sagaTask.toPromise();
+
+  const { user } = store.getState();
+
+  if (user.me) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/",
+      },
+    };
+  }
 });
 
 export default Login;
