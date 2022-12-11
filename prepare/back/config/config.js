@@ -16,6 +16,7 @@ module.exports = {
     "password": process.env.DB_PASSWORD,
     "database": "Grape",
     "host": "127.0.0.1",
+    "port": "80",
     "dialect": "mysql"
   },
   "production": {
