@@ -1,5 +1,7 @@
-node_modules/
-.next/
+node_modules
+.next
+Grape1.pem
+.env
 
 # Created by .ignore support plugin (hsz.mobi)
 ### JetBrains template
