@@ -6,8 +6,8 @@ const passport = require("passport");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
 const path = require("path");
-const db = require("./models");
-const passportConfig = require("./passport");
+const hpp = require('hpp');
+const helmet = require('helmet');
 
 const postRouter = require("./routes/post");
 const postsRouter = require("./routes/posts");
