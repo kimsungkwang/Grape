@@ -6,8 +6,8 @@ const passport = require("passport");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
 const path = require("path");
-const hpp = require('hpp');
-const helmet = require('helmet');
+const hpp = require("hpp");
+const helmet = require("helmet");
 
 const postRouter = require("./routes/post");
 const postsRouter = require("./routes/posts");
@@ -27,16 +27,16 @@ db.sequelize
 
 passportConfig();
 
-if (process.env.NODE_ENV === 'production') {
-  app.use(morgan('combined'));
+if (process.env.NODE_ENV === "production") {
+  app.use(morgan("combined"));
   app.use(hpp());
   app.use(helmet());
 } else {
-  app.use(morgan('dev'));
+  app.use(morgan("dev"));
 }
 app.use(
   cors({
-    origin: ["http://localhost:3060", "grape.com", 'http://3.36.63.131'],
+    origin: ["http://localhost:3060", "grape.com", "http://13.125.194.61"],
     credentials: true, // 쿠키도 같이 전달
   })
 );
