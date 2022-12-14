@@ -36,7 +36,8 @@ if (process.env.NODE_ENV === "production") {
 }
 app.use(
   cors({
-    origin: ["http://localhost:3060", "grape.com", "http://3.36.26.178"],
+    // origin: ["http://localhost:3060", "grape.com", "http://3.36.26.178"],
+    origin: true,
     credentials: true, // 쿠키도 같이 전달
   })
 );
