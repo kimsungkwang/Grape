@@ -10,9 +10,8 @@ import { useDispatch } from "react-redux";
 import { logoutRequestAction } from "../reducers/user";
 
 import PostModal from "./Modal/PostModal";
-
 import UserProfile from "./UserProfile";
-import LoginForm from "./LoginForm";
+// import LoginForm from "./LoginForm";
 import useInput from "../hooks/useInput";
 
 const SearchInput = styled(Input.Search)`
@@ -37,14 +36,15 @@ function AppLayout({ children }) {
   return (
     <div>
       <Menu
+        style={{ textAlign: "center" }}
         mode="horizontal"
         selectedKeys={[router.pathname]}
         items={[
           {
             label: (
-              <Link href="/">
-                <a>Grape</a>
-              </Link>
+                <Link href="/">
+                  Grape
+                </Link>
             ),
             key: "/",
           },
@@ -84,17 +84,16 @@ function AppLayout({ children }) {
         ]}
       />
       {
-        <Row gutter={8}>
+        <Row gutter={[32, 8]}>
+          <Col xs={24} md={1}></Col>
           <Col xs={24} md={6}>
-            {me ? <UserProfile /> : <LoginForm />}
-          </Col>
-          <Col xs={24} md={12}>
-            {children}
-          </Col>
-          <Col xs={24} md={6}>
+            {me && <UserProfile />}
             <a href="https://www.zerocho.com" target="_blank" rel="noreferrer noopener">
               Made by KimsungKwang
             </a>
+          </Col>
+          <Col xs={24} md={14}>
+            {children}
           </Col>
         </Row>
       }

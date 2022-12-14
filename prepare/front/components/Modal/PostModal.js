@@ -19,7 +19,7 @@ const App = () => {
       <div onClick={showModal}>
         <EditOutlined />
       </div>
-      <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+      <Modal title="무슨 일이 있었나요?" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
         <PostForm />
       </Modal>
     </>

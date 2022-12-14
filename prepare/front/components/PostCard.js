@@ -64,7 +64,7 @@ const PostCard = ({ post }) => {
 
   const liked = post.Likers.find((v) => v.id === id);
   return (
-    <div style={{ marginTop: 10 }}>
+    <div style={{ marginTop: 20 }}>
       <Card
         cover={post.Images[0] && <PostImages images={post.Images} />}
         actions={[
