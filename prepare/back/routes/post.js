@@ -46,7 +46,7 @@ router.post("/", isLoggedIn, upload.none(), async (req, res, next) => {
           })
         )
       );
-      await post.addHashtags(result.mao((v) => v[0]));
+      await post.addHashtags(result.map((v) => v[0]));
     }
     if (req.body.image) {
       if (Array.isArray(req.body.image)) {
