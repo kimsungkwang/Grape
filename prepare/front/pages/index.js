@@ -53,8 +53,8 @@ function Home() {
 }
 
 export const getServerSideProps = wrapper.getServerSideProps((store) => async ({ req }) => {
-  const cookie = req ? req.headers.cookie : "";
-  axios.defaults.headers.Cookie = "";
+  const cookie = req ? req.headers.cookie : '';
+  axios.defaults.headers.Cookie = '';
   if (req && cookie) {
     axios.defaults.headers.Cookie = cookie;
   }
@@ -66,16 +66,6 @@ export const getServerSideProps = wrapper.getServerSideProps((store) => async ({
   });
   store.dispatch(END);
   await store.sagaTask.toPromise();
-
-  const { user } = store.getState();
-  if (!user.me) {
-    return {
-      redirect: {
-        permanent: false,
-        destination: "/login",
-      },
-    };
-  }
 });
 
 export default Home;

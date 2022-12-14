@@ -6,11 +6,11 @@ import Router from "next/router";
 import styled from "styled-components";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
-import { END } from 'redux-saga';
-import axios from 'axios';
+import { END } from "redux-saga";
+import axios from "axios";
 import { LOAD_MY_INFO_REQUEST } from "../reducers/user";
 
-import Logo from "../public/favicon.png";
+import Logo from "../public/grape1.png";
 import useInput from "../hooks/useInput";
 import { loginRequestAction } from "../reducers/user";
 import wrapper from "../store/configureStore";
@@ -43,7 +43,7 @@ const LogoAndTitle = styled.div`
 const Login = () => {
   const { me } = useSelector((state) => state.user);
   const dispatch = useDispatch();
-  const { logInLoading, logInError } = useSelector((state) => state.user);
+  const { logInLoading, logInError, logInDone } = useSelector((state) => state.user);
   const [email, onChangeEmail] = useInput("");
   const [password, onChangePassword] = useInput("");
 
@@ -53,6 +53,14 @@ const Login = () => {
       Router.replace("/");
     }
   }, [me]);
+
+  // 로그인 완료 시 메인페이지로 보내주기
+  useEffect(() => {
+    if (logInDone) {
+      alert("로그인 완료 ");
+      Router.replace("/");
+    }
+  }, [logInDone]);
 
   // 로그인 실패 , 에러
   useEffect(() => {
@@ -143,10 +151,10 @@ const Login = () => {
 };
 
 export const getServerSideProps = wrapper.getServerSideProps((store) => async ({ req }) => {
-  console.log('getServerSideProps start');
+  console.log("getServerSideProps start");
   console.log(req.headers);
-  const cookie = req ? req.headers.cookie : '';
-  axios.defaults.headers.Cookie = '';
+  const cookie = req ? req.headers.cookie : "";
+  axios.defaults.headers.Cookie = "";
   if (req && cookie) {
     axios.defaults.headers.Cookie = cookie;
   }
@@ -154,19 +162,8 @@ export const getServerSideProps = wrapper.getServerSideProps((store) => async ({
     type: LOAD_MY_INFO_REQUEST,
   });
   store.dispatch(END);
-  console.log('getServerSideProps end');
+  console.log("getServerSideProps end");
   await store.sagaTask.toPromise();
-
-  const { user } = store.getState();
-
-  if (user.me) {
-    return {
-      redirect: {
-        permanent: false,
-        destination: "/",
-      },
-    };
-  }
 });
 
 export default Login;

@@ -222,7 +222,7 @@ router.post("/", isNotLoggedIn, async (req, res, next) => {
     await User.create({
       email: req.body.email,
       nickname: req.body.nickname,
-      password: hashedPassword,
+      password: hashedPassword, // 비밀번호 hash화
     });
     // res.setHeader("Access-Control-Allow-Origin", "*")
     res.status(201).send("ok");
@@ -243,7 +243,7 @@ router.post("/logout", isLoggedIn, (req, res) => {
   // == > passport@0.5 로 바꿈  ;;;;;;;;;;
 
   req.session.destroy(); // 세션 지우기
-  req.
+  req.session = null;
   res.send("ok");
 });
 

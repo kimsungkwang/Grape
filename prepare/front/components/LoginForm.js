@@ -49,9 +49,6 @@ const LoginForm = () => {
         <Button type="primary" htmlType="submit" loading={logInLoading}>
           로그인
         </Button>
-        <Button style={{ backgroundColor: "yellow" }}>
-          카카오톡 로그인
-        </Button>
         <Link href="/signup">
           <a>
             <Button>가입하기</Button>

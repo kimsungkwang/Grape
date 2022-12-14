@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import PropTypes from "prop-types";
 import Link from "next/link";
-import { UserOutlined, HomeOutlined, UnlockOutlined } from "@ant-design/icons";
+import { UserOutlined, HomeOutlined, UnlockOutlined, EditOutlined } from "@ant-design/icons";
 import { Menu, Input, Row, Col } from "antd";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
@@ -66,6 +66,14 @@ function AppLayout({ children }) {
             label: (
               <a loading={logOutLoading} onClick={onLogOut}>
                 <UnlockOutlined />
+              </a>
+            ),
+            key: "/logout",
+          },
+          {
+            label: (
+              <a loading={logOutLoading} onClick={onLogOut}>
+                <EditOutlined />
               </a>
             ),
             key: "/logout",
