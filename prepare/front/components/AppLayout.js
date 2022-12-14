@@ -80,7 +80,7 @@ function AppLayout({ children }) {
             ),
             key: "/post",
           },
-          { label: <SearchInput enterButton value={searchInput} onChange={onChangeSearchInput} onSearch={onSearch} />, key: "/search" },
+          { label: <SearchInput enterButton value={searchInput} onChange={onChangeSearchInput} onSearch={onSearch} placeholder="해시태그를 검색해보세요 ! " />, key: "/search" },
         ]}
       />
       {

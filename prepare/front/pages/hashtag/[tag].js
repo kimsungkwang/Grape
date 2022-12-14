@@ -39,7 +39,7 @@ function Hashtag() {
       {mainPosts.map((c) => (
         <PostCard key={c.id} post={c} />
       ))}
-      <div ref={hasMorePosts && !loadPostsLoading ? ref : undefined} style={{ height: 10 }} />
+      <div ref={hasMorePosts && !loadPostsLoading ? ref : undefined} style={{ height: 20 }} />
     </AppLayout>
   );
 }
