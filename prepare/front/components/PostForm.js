@@ -1,6 +1,7 @@
 import React, { useCallback, useRef, useEffect } from "react";
 import { Form, Input, Button } from "antd";
 import { useSelector, useDispatch } from "react-redux";
+import { CameraOutlined, UpSquareOutlined } from "@ant-design/icons";
 
 import { UPLOAD_IMAGES_REQUEST, REMOVE_IMAGE, ADD_POST_REQUEST } from "../reducers/post";
 import useInput from "../hooks/useInput";
@@ -64,9 +65,11 @@ const PostForm = () => {
       <Input.TextArea value={text} onChange={onChangeText} maxLength={140} placeholder="뭐든지 추가해보세요 ! " />
       <div>
         <input type="file" name="image" multiple hidden ref={imageInput} onChange={onChangeImages} />
-        <Button onClick={onClickImageUpload}>이미지 업로드</Button>
+        <Button onClick={onClickImageUpload}>
+          <CameraOutlined />
+        </Button>
         <Button type="primary" style={{ float: "right" }} htmlType="submit">
-          업로드
+          <UpSquareOutlined />
         </Button>
       </div>
       <div>

@@ -1,13 +1,15 @@
 import React, { useCallback } from "react";
 import PropTypes from "prop-types";
 import Link from "next/link";
-import { UserOutlined, HomeOutlined, UnlockOutlined, EditOutlined } from "@ant-design/icons";
+import { UserOutlined, HomeOutlined, UnlockOutlined } from "@ant-design/icons";
 import { Menu, Input, Row, Col } from "antd";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 import Router, { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { logoutRequestAction } from "../reducers/user";
+
+import PostModal from "./Modal/PostModal";
 
 import UserProfile from "./UserProfile";
 import LoginForm from "./LoginForm";
@@ -25,7 +27,7 @@ function AppLayout({ children }) {
 
   const onLogOut = useCallback(() => {
     dispatch(logoutRequestAction());
-    Router.push("/login")
+    Router.push("/login");
   }, []);
 
   const onSearch = useCallback(() => {
@@ -72,13 +74,13 @@ function AppLayout({ children }) {
           },
           {
             label: (
-              <a loading={logOutLoading} onClick={onLogOut}>
-                <EditOutlined />
-              </a>
+              <div>
+                <PostModal />
+              </div>
             ),
-            key: "/logout",
+            key: "/post",
           },
-          { label: <SearchInput enterButton value={searchInput} onChange={onChangeSearchInput} onSearch={onSearch} />, key: "/search" }
+          { label: <SearchInput enterButton value={searchInput} onChange={onChangeSearchInput} onSearch={onSearch} />, key: "/search" },
         ]}
       />
       {
