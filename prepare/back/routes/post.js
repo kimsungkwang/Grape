@@ -27,8 +27,8 @@ const upload = multer({
     s3: new AWS.S3(),
     bucket: "grape-s3",
     key(req, file, cb) {
-      cb(null, `original/${Date.now()}_${path.basename(file.originalname)}`)
-    }
+      cb(null, `original/${Date.now()}_${path.basename(file.originalname)}`);
+    },
   }),
   limits: { fileSize: 20 * 1024 * 1024 }, //   20MB
 });
@@ -112,7 +112,7 @@ router.post("/", isLoggedIn, upload.none(), async (req, res, next) => {
 router.post("/images", isLoggedIn, upload.array("image"), (req, res, next) => {
   // POST /post/images
   console.log(req.files);
-  res.json(req.files.map((v) => v.location));
+  res.json(req.files.map((v) => v.location.replace(/\/original\//, "/thumb/")));
 });
 
 // 게시글 가져오기
