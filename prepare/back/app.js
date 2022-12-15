@@ -31,16 +31,21 @@ if (process.env.NODE_ENV === "production") {
   app.use(morgan("combined"));
   app.use(hpp());
   app.use(helmet());
+  app.use(
+    cors({
+      origin: "http://grapegrape.site",
+      credentials: true, // 쿠키도 같이 전달
+    })
+  );
 } else {
   app.use(morgan("dev"));
+  app.use(
+    cors({
+      origin: true,
+      credentials: true,
+    })
+  );
 }
-app.use(
-  cors({
-    origin: ["http://localhost:3060", "http://grapegrape.site"],
-    // origin: true,
-    credentials: true, // 쿠키도 같이 전달
-  })
-);
 
 app.use("/", express.static(path.join(__dirname, "uploads")));
 app.use(express.json()); // front에서 json 형태로 보냈을 때 json 형태의 데이터를 req.body 안에 넣어줌
