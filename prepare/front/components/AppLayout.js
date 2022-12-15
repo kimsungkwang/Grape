@@ -88,7 +88,7 @@ function AppLayout({ children }) {
           <Col xs={24} md={1}></Col>
           <Col xs={24} md={6}>
             {me && <UserProfile />}
-            <a href="https://www.zerocho.com" target="_blank" rel="noreferrer noopener">
+            <a href="https://github.com/kimsungkwang/Grape" target="_blank" rel="noreferrer noopener">
               Made by KimsungKwang
             </a>
           </Col>
