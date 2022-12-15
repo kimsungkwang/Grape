@@ -36,7 +36,7 @@ if (process.env.NODE_ENV === "production") {
 }
 app.use(
   cors({
-    origin: ["http://localhost:3060", "grapegrape.site", "http://3.36.26.178"],
+    origin: ["http://localhost:3060", "http://grapegrape.site"],
     // origin: true,
     credentials: true, // 쿠키도 같이 전달
   })
@@ -51,6 +51,11 @@ app.use(
     saveUninitialized: false,
     resave: false,
     secret: process.env.COOKIE_SECRET,
+    cookie: {
+      httpOnly: true,
+      secure: false,
+      domain: process.env.NODE_ENV === "production" && ".grapegrape.site",
+    },
   })
 );
 app.use(passport.initialize()); // passport 구동
