@@ -109,7 +109,7 @@ const PostCard = ({ post }) => {
           </Card>
         ) : (
           <>
-            <span style={{ float: "right" }}>{moment(post.createdAt).format("YYYY.MM.DD.")}</span>
+            <span style={{ float: "right" }}>{moment(post.createdAt).fromNow()}</span>
             <Card.Meta
               avatar={
                 <Link href={`/user/${post.User.id}`}>
