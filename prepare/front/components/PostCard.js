@@ -97,7 +97,7 @@ const PostCard = ({ post }) => {
             <span style={{ float: "right" }}>{moment(post.createdAt).fromNow()}</span>
             <Card.Meta
               avatar={
-                <Link href={`/user/${post.Repost.User.id}`}>
+                <Link href={`/user/${post.Repost.User.id}`} prefetch={false}>
                   <a>
                     <Avatar>{post.Repost.User.nickname[0]}</Avatar>
                   </a>
@@ -112,7 +112,7 @@ const PostCard = ({ post }) => {
             <span style={{ float: "right" }}>{moment(post.createdAt).fromNow()}</span>
             <Card.Meta
               avatar={
-                <Link href={`/user/${post.User.id}`}>
+                <Link href={`/user/${post.User.id}`} prefetch={false}>
                   <a>
                     <Avatar>{post.User.nickname[0]}</Avatar>
                   </a>
