@@ -94,7 +94,7 @@ const PostCard = ({ post }) => {
         extra={id && <FollowButton post={post} />}>
         {post.RepostId && post.Repost ? (
           <Card cover={post.Repost.Images[0] && <PostImages images={post.Repost.Images} />}>
-            <span style={{ float: "right" }}>{moment(post.createdAt).format("YYYY.MM.DD.")}</span>
+            <span style={{ float: "right" }}>{moment(post.createdAt).fromNow()}</span>
             <Card.Meta
               avatar={
                 <Link href={`/user/${post.Repost.User.id}`}>
