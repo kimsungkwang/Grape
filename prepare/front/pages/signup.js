@@ -9,7 +9,7 @@ import axios from "axios";
 import { END } from "redux-saga";
 import styled from "styled-components";
 
-import Logo from "../public/favicon.png";
+import Logo from "../public/grape1.png";
 import useInput from "../hooks/useInput";
 import { SIGN_UP_REQUEST, LOAD_MY_INFO_REQUEST } from "../reducers/user";
 import wrapper from "../store/configureStore";
@@ -27,6 +27,13 @@ const FormWrapper = styled(Form)`
   padding: 20px;
   width: 500px;
   height: 500px;
+  margin: 0 auto;
+`;
+
+const LogoFormWrapper = styled(Form)`
+  padding: 20px;
+  width: 500px;
+  height: 320px;
   margin: 0 auto;
 `;
 
@@ -121,15 +128,17 @@ const Signup = () => {
       <Head>
         <title>회원가입 | Grape</title>
       </Head>
-      <LogoAndTitle>
-        <div className="flex-center flex-col">
-          <Image src={Logo} width={100} height={100} />
-          <h1 className="text-3xl mt-4 italic">Grape</h1>
-        </div>
-        <div>
-          <p className="sm:text-4xl text-xl">포도 포도 포도</p>
-        </div>
-      </LogoAndTitle>
+      <LogoFormWrapper>
+        <LogoAndTitle>
+          <div className="flex-center flex-col">
+            <Image src={Logo} width={100} height={100} />
+            <h1 className="text-3xl mt-4 italic">Grape</h1>
+          </div>
+          <div>
+            <p className="sm:text-4xl text-xl">포도 포도 포도</p>
+          </div>
+        </LogoAndTitle>
+      </LogoFormWrapper>
       <FormWrapper onFinish={onSubmit} style={{ padding: 10 }}>
         <div>
           <label htmlFor="user-email">아이디</label>

@@ -13,7 +13,7 @@ const PostCardContent = ({ postData, editMode, onChangePost, onCancelUpdate }) =
     if (updatePostDone) {
       onCancelUpdate();
     }
-  }, [updatePostDone])
+  }, [updatePostDone]);
 
   const onChangeText = useCallback((e) => {
     setEditText(e.target.value);
@@ -25,7 +25,9 @@ const PostCardContent = ({ postData, editMode, onChangePost, onCancelUpdate }) =
         <>
           <TextArea value={editText} onChange={onChangeText} />
           <Button.Group>
-            <Button loading={updatePostLoading} onClick={onChangePost(editText)}>수정</Button>
+            <Button loading={updatePostLoading} onClick={onChangePost(editText)}>
+              수정
+            </Button>
             <Button type="danger" onClick={onCancelUpdate}>
               취소
             </Button>
@@ -54,7 +56,7 @@ PostCardContent.propTypes = {
   onCancelUpdate: PropTypes.func.isRequired,
 };
 
-PostCardContent.propTypes = {
+PostCardContent.defaultProps = {
   editMode: false,
 };
 

@@ -105,7 +105,7 @@ const PostCard = ({ post }) => {
                     </Button>
                   </>
                 ) : (
-                  <Button>신고</Button>
+                  <Button>^^</Button>
                 )}
               </Button.Group>
             }>
