@@ -24,7 +24,7 @@ const PostCard = ({ post }) => {
   }, []);
 
   const onCancelUpdate = useCallback(() => {
-    setEditMode(true);
+    setEditMode(false);
   }, []);
 
   const onChangePost = useCallback(
