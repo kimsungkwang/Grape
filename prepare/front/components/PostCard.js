@@ -126,7 +126,7 @@ const PostCard = ({ post }) => {
                 </Link>
               }
               title={post.Repost.User.nickname}
-              description={<PostCardContent postData={post.Repost.content} onChangePost={onChangePost} onCancelUPdate={onCancelUpdate} />}
+              description={<PostCardContent postData={post.Repost.content} onChangePost={onChangePost} onCancelUpdate={onCancelUpdate} />}
             />
           </Card>
         ) : (
@@ -142,7 +142,7 @@ const PostCard = ({ post }) => {
               }
               title={post.User.nickname}
               description={
-                <PostCardContent editMode={editMode} onChangePost={onChangePost} onCancelUPdate={onCancelUpdate} postData={post.content} />
+                <PostCardContent editMode={editMode} onChangePost={onChangePost} onCancelUpdate={onCancelUpdate} postData={post.content} />
               }
             />
           </>
